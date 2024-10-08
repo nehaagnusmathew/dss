@@ -1,79 +1,60 @@
 #include<stdio.h>
-#include<string.h>
 #include<ctype.h>
 void push(char);
+int priority(char);
 char pop();
-int precedence(char);
-int top=-1,j=0,i;
-char a[20],p[20],s[20];
-void main()
-{
-printf("Enter the expression");
-scanf("%s",a);
-printf("The entered expression in the infix =%s \n" ,a);
-int n=strlen(a);
-for(i=0;i<n;i++)
-{
- if(isalnum(a[i]))
- {
-  p[j]=a[i];
-  j++;
- }
- else if(a[i]=='(')
- {
- push(a[i]);
- }
- else if(a[i]==')')
- {
- while(s[top]!='(')
- {
-  p[j]=pop();
-  j++;
-  }
-  pop();
-  }
-  else
-  {
-  while((top!=-1)&&(precedence(a[i])<=precedence(s[top])))
-  {
-  p[j]=pop();
-  j++;
-  }
-  push(a[i]);
-  }
-  }
-  while(top!=-1)
-  {
-  p[j]=pop();
-  j++;
-  }
-  p[j]='\0';
-  printf("the entered expression in the postfix form =%s\n" ,p);
-  }
-  void push(char item)
-  {
-   top++;
-   s[top]=item;
-   }
-   char pop()
-   {
-   char item;
-   item=s[top];
-   top--;
-   return item;
-   }
-   int precedence(char x)
-   {
-    switch(x)
-    {
-     case '^':return 3;
-     case '*': 
-     case '/':return 2;
-     case '+':
-     case '-':return 1;
-     default:return 0;
-     }
-     }
-   
- 
- 
+int top = -1;
+char stack[50];
+void main() {
+    char ch, infix[50];
+    int i=0,item;
+    printf("Enter infix expression: ");
+    scanf("%s", infix);
+    printf("Postfix expression: ");
+    while ( (ch = infix[i]) != '\0') { 
+        if (isspace(ch)) 
+            continue;
+        else if (ch == '(' || ch == '^') 
+            push(ch);
+        else if (isalnum(ch)) 
+            printf("%c", ch);
+        else if (ch == ')') {
+            while ((item = pop()) != '(') {  
+                printf("%c", item);
+        } } 
+        else {
+            while (top != -1 && priority(stack[top]) >= priority(ch)) {
+                printf("%c", pop());
+            }
+            push(ch);
+        }
+        i++;
+    }
+    while (top != -1) {
+        printf("%c", pop());
+} }
+void push(char ch) {
+    if (top >= 49) {
+        printf("\nStack Overflow\n");
+    } 
+   else {
+        stack[++top] = ch;
+} } 
+char pop() {
+    if (top == -1) {
+        printf("\nStack Underflow\n");
+        return -1;
+    } 
+    else {
+        return stack[top--];
+} }
+int priority(char ch) {
+    if (ch == '+' || ch == '-')
+        return 1;
+    else if (ch == '*' || ch == '/')
+        return 2;
+    else if (ch == '^')
+        return 3;
+    else 
+        return 0;
+}
