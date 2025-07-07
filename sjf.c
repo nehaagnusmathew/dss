@@ -14,6 +14,9 @@ float avg_wtime=0,avg_ttime=0;
 for(i=0;i<n-1;i++){
 for(j=i+1;j<n;j++){
 if(btime[i]>btime[j]){
+temp=btime[i] ;
+btime[i] =btime[j] ;
+btime[j] =temp;
 temp=p[i];
 p[i]=p[j];
 p[j]=temp;
